@@ -36,18 +36,93 @@ const {
  *                type: string
  *    responses:
  *      200:
- *        descrption: correct credentials
+ *        description: correct credentials
+ *      404:
+ *        description: user not found
  */
 
 router.post('/login', logIn);
 
+/**
+ * @swagger
+ * /api/v1/auth/sign-up:
+ *  post:
+ *    summary: sign up a new user
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              first_name:
+ *                type: string
+ *              last_name:
+ *                type: string
+ *              email:
+ *                type: string
+ *              password:
+ *                type: string
+ *    responses:
+ *      201:
+ *        description: succes sign Up
+ *      404:
+ *        description: somthing goes bad
+ */
+
 router.post('/sign-up', verifySchema(signupSchema, 'body'), signUp);
+
+/**
+ * @swagger
+ * /api/v1/auth/forget-password:
+ *  post:
+ *    summary: recover password
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                type: string
+ *    responses:
+ *      200:
+ *        description: Email sended check yor inbox
+ */
 
 router.post(
   '/forget-password',
   verifySchema(forgetPasswordSchema, 'body'),
   forgetPassword
 );
+
+/**
+ * @swagger
+ * /api/v1/auth/change-password/{token}:
+ *  post:
+ *    summary: recover password
+ *    parameters:
+ *      - in: path
+ *        name: token
+ *        schema:
+ *          type: string
+ *        required: true
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              password:
+ *                type: string
+ *    responses:
+ *      200:
+ *        description: update success
+ *      404:
+ *        description: user not found
+ */
 
 router.post(
   '/change-password/:token',
